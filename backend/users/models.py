@@ -30,13 +30,11 @@ class User(AbstractUser):
         blank=True
     )
     last_name = models.CharField(
-        verbose_name='last name',
+        verbose_name='Last name',
         max_length=150,
         blank=True
     )
 
-    USERNAME_FIELD = 'email'
-
-    REQUIRED_FIELDS = ('username', 'password', 'first_name', 'last_name')
+    REQUIRED_FIELDS = ('email', 'password', 'first_name', 'last_name')
 
     objects = UserManager()
