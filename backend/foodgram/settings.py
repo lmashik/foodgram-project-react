@@ -27,7 +27,7 @@ SECRET_KEY = 'django-insecure-upi#girs_v8b@02-bza2+3jdiwobrba2*h()tvz&i300t_m&l6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django_filters',
     'api',
     'users',
+    'recipes',
 ]
 
 MIDDLEWARE = [
