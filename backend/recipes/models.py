@@ -11,29 +11,29 @@ class Tag(models.Model):
     name = models.CharField(
         verbose_name='Tag name',
         max_length=200,
-        unique=True
+        unique=True,
     )
     colour = models.CharField(
         verbose_name='Colour',
         max_length=7,
         unique=True,
         default='#E26C2D',
-        validators=(RegexValidator(r'^\#[0-9A-Fa-f]'),)
+        validators=(RegexValidator(r'^\#[0-9A-Fa-f]'),),
     )
     slug = models.SlugField(
         verbose_name='Identifier',
         max_length=200,
         unique=True,
-        validators=(RegexValidator(r'^[-a-zA-Z0-9_]+$'),)
+        validators=(RegexValidator(r'^[-a-zA-Z0-9_]+$'),),
     )
-
-    def __str__(self):
-        """Строковое представление объекта модели."""
-        return self.name
 
     class Meta:
         verbose_name = 'Tag'
         verbose_name_plural = 'Tags'
+
+    def __str__(self):
+        """Строковое представление объекта модели."""
+        return self.name
 
 
 class Ingredient(models.Model):
@@ -41,16 +41,16 @@ class Ingredient(models.Model):
     name = models.CharField(verbose_name='Ingredient name', max_length=200)
     measurement_unit = models.CharField(
         verbose_name='Measurement unit',
-        max_length=200
+        max_length=200,
     )
-
-    def __str__(self):
-        """Строковое представление объекта модели."""
-        return self.name
 
     class Meta:
         verbose_name = 'Ingredient'
         verbose_name_plural = 'Ingredients'
+
+    def __str__(self):
+        """Строковое представление объекта модели."""
+        return self.name
 
 
 class Recipe(models.Model):
@@ -70,7 +70,7 @@ class Recipe(models.Model):
         Ingredient,
         verbose_name='Ingredients',
         related_name='Recipes',
-        through='RecipeIngredient'
+        through='IngredientAmount',
     )
     tags = models.ManyToManyField(
         Tag,
@@ -78,17 +78,35 @@ class Recipe(models.Model):
         related_name='Recipes',
     )
 
-    def __str__(self):
-        """Строковое представление объекта модели."""
-        return self.name[:30]
-
     class Meta:
         verbose_name = 'Recipe'
         verbose_name_plural = 'Recipes'
 
+    def __str__(self):
+        """Строковое представление объекта модели."""
+        return self.name[:30]
 
-class RecipeIngredient(models.Model):
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+
+class IngredientAmount(models.Model):
+    recipe = models.ForeignKey(
+        Recipe,
+        verbose_name='Recipe',
+        related_name='amount',
+        on_delete=models.CASCADE,
+    )
+    ingredient = models.ForeignKey(
+        Ingredient,
+        verbose_name='Ingredient',
+        related_name='amount',
+        on_delete=models.CASCADE,
+    )
     amount = models.IntegerField(verbose_name='Recipe ingredient amount')
+
+    class Meta:
+        verbose_name = 'Ingredient amount'
+
+    def __str__(self):
+        """Строковое представление объекта модели."""
+        return (f'{self.ingredient.name[:30]}: {self.amount} '
+                f'{self.ingredient.measurement_unit}')
 

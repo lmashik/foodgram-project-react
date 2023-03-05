@@ -3,6 +3,7 @@ from recipes.models import Ingredient, Recipe, Tag
 from rest_framework import serializers
 from users.models import User
 
+
 class TagSerializer(serializers.ModelSerializer):
     """Сериализатор для тегов."""
     class Meta:
