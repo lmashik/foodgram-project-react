@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from recipes.models import Tag, Ingredient, Recipe
+from recipes.models import Tag, Ingredient, Recipe, IngredientAmount
 
 
 class TagAdmin(admin.ModelAdmin):
@@ -17,11 +17,18 @@ class IngredientAdmin(admin.ModelAdmin):
     list_filter = ('name',)
 
 
+class IngredientAmountInline(admin.TabularInline):
+    model = IngredientAmount
+
+
 class RecipeAdmin(admin.ModelAdmin):
     """Отображение параметров Ingredient в административной части сервиса."""
     list_display = ('pk', 'name', 'author',)
     search_fields = ('name',)
     list_filter = ('name',)
+    inlines = (
+        IngredientAmountInline,
+    )
 
 
 admin.site.register(Tag, TagAdmin)

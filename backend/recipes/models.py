@@ -50,7 +50,7 @@ class Ingredient(models.Model):
 
     def __str__(self):
         """Строковое представление объекта модели."""
-        return self.name
+        return f'{self.name}, {self.measurement_unit}'
 
 
 class Recipe(models.Model):
@@ -60,22 +60,27 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         User,
         verbose_name='Recipe author',
-        on_delete=models.CASCADE
+        related_name='recipes',
+        on_delete=models.CASCADE,
     )
-    image = models.ImageField(verbose_name='Recipe image')
+    image = models.ImageField(
+        verbose_name='Recipe image',
+        upload_to='media/',
+    )
     cooking_time = models.IntegerField(
-        verbose_name='Cooking time', validators=(validate_time,)
+        verbose_name='Cooking time',
+        validators=(validate_time,),
     )
     ingredients = models.ManyToManyField(
         Ingredient,
         verbose_name='Ingredients',
-        related_name='Recipes',
+        related_name='recipes',
         through='IngredientAmount',
     )
     tags = models.ManyToManyField(
         Tag,
         verbose_name='Tags',
-        related_name='Recipes',
+        related_name='recipes',
     )
 
     class Meta:
