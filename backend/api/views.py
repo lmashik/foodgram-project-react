@@ -2,9 +2,10 @@ from api.serializers import (
     IngredientSerializer, RecipeSerializer, TagSerializer, CustomUserSerializer
 )
 from djoser.views import UserViewSet
-from djoser.serializers import UserSerializer
 from recipes.models import Ingredient, Recipe, Tag
-from rest_framework import viewsets
+from users.models import Subscription, User
+from rest_framework import viewsets, permissions
+from rest_framework.decorators import action
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
@@ -25,9 +26,19 @@ class RecipeViewSet(viewsets.ModelViewSet):
     serializer_class = RecipeSerializer
 
 
-# class CustomUserViewSet(UserViewSet):
-#
-#     def get_serializer_class(self):
-#         if self.action in ('list', 'retrieve', 'create'):
-#             return CustomUserSerializer
-#         return UserSerializer
+class CustomUserViewSet(UserViewSet):
+
+    @action(
+        detail=True,
+        methods=('post', 'delete'),
+        permission_classes=(permissions.IsAuthenticated,)
+    )
+    def subscribe(self, request, pk=None):
+        if request.method == 'post':
+            Subscription.objects.create(
+                subscriber=request.user.pk, author=User.objects.get(pk=pk).pk
+            )
+        if request.method == 'delete':
+            Subscription.objects.get(
+                subscriber=request.user.pk, author=User.objects.get(pk=pk).pk
+            ).delete()
