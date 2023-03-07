@@ -72,4 +72,8 @@ class Subscription(models.Model):
             ),
         )
 
+    def __str__(self):
+        """Строковое представление объекта модели."""
+        return f'{self.subscriber} followed {self.author}'
+
 

@@ -65,7 +65,7 @@ class Recipe(models.Model):
     )
     image = models.ImageField(
         verbose_name='Recipe image',
-        upload_to='media/',
+        upload_to='recipe_images/',
     )
     cooking_time = models.IntegerField(
         verbose_name='Cooking time',
@@ -115,3 +115,30 @@ class IngredientAmount(models.Model):
         return (f'{self.ingredient.name[:30]}: {self.amount} '
                 f'{self.ingredient.measurement_unit}')
 
+
+class Favorites(models.Model):
+    user = models.ForeignKey(
+        User,
+        verbose_name='User',
+        related_name='favorites',
+        on_delete=models.CASCADE,
+    )
+    recipes = models.ManyToManyField(
+        Recipe,
+        verbose_name='Recipes',
+        related_name='favorites',
+    )
+
+
+class ShoppingCart(models.Model):
+    user = models.ForeignKey(
+        User,
+        verbose_name='User',
+        related_name='shopping_cart',
+        on_delete=models.CASCADE,
+    )
+    recipes = models.ManyToManyField(
+        Recipe,
+        verbose_name='Recipes',
+        related_name='shopping_cart',
+    )

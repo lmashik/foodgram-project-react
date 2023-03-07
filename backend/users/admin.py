@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from users.models import User
+from users.models import User, Subscription
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -10,4 +10,10 @@ class UserAdmin(admin.ModelAdmin):
     list_filter = ('username', 'email',)
 
 
+class SubscriptionAdmin(admin.ModelAdmin):
+    """Отображение параметров Subscription в административной части сервиса."""
+    list_display = ('pk', 'author', 'subscriber',)
+
+
 admin.site.register(User, UserAdmin)
+admin.site.register(Subscription, SubscriptionAdmin)
