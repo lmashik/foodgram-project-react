@@ -6,36 +6,15 @@ from .validators import validate_me
 
 
 class User(AbstractUser):
-    username = models.CharField(
-        verbose_name='Username',
-        max_length=150,
-        unique=True,
-        validators=(
-            RegexValidator(
-                regex=r'^[\w.@+-]+\Z',
-                message='Invalid username'
-            ),
-            validate_me,
-        )
-    )
-    password = models.CharField(verbose_name='Password', max_length=128)
+    password = models.CharField(verbose_name='Password', max_length=150)
     email = models.EmailField(
         verbose_name='E-mail',
         max_length=254,
-        unique=True
-    )
-    first_name = models.CharField(
-        verbose_name='First name',
-        max_length=150,
-        blank=True
-    )
-    last_name = models.CharField(
-        verbose_name='Last name',
-        max_length=150,
-        blank=True
+        unique=True,
     )
 
-    REQUIRED_FIELDS = ('email', 'password', 'first_name', 'last_name')
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = ('username', 'password', 'first_name', 'last_name')
 
     objects = UserManager()
 
@@ -68,7 +47,11 @@ class Subscription(models.Model):
         constraints = (
             models.UniqueConstraint(
                 fields=('subscriber', 'author'),
-                name='Author cannot be self-followed',
+                name='unique_subscription',
+            ),
+            models.CheckConstraint(
+                check=~models.Q(subscriber=models.F('author')),
+                name='no_self_subscription'
             ),
         )
 
