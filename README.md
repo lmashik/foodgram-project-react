@@ -62,17 +62,17 @@ python3 -m pip install --upgrade pip
 cd backend
 ```
 
-5. Установите зависимости из файла requirements.txt
+6. Установите зависимости из файла requirements.txt
 ```bash
 pip install -r requirements.txt
 ```
 
-6. Выполните миграции
+7. Выполните миграции
 ```bash
 python3 manage.py migrate
 ```
 
-7. Запустите проект
+8. Запустите проект
 ```bash
 python3 manage.py runserver
 ```
