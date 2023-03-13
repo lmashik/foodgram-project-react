@@ -1,16 +1,24 @@
 from django.contrib.auth.models import AbstractUser, UserManager
-from django.core.validators import RegexValidator
 from django.db import models
-
-from .validators import validate_me
 
 
 class User(AbstractUser):
+    """Модель пользователя."""
     password = models.CharField(verbose_name='Password', max_length=150)
     email = models.EmailField(
         verbose_name='E-mail',
         max_length=254,
         unique=True,
+    )
+    first_name = models.CharField(
+        verbose_name='First name',
+        max_length=150,
+        blank=False,
+    )
+    last_name = models.CharField(
+        verbose_name='Last name',
+        max_length=150,
+        blank=False,
     )
 
     USERNAME_FIELD = 'email'
@@ -28,6 +36,7 @@ class User(AbstractUser):
 
 
 class Subscription(models.Model):
+    """Модель подписки."""
     subscriber = models.ForeignKey(
         User,
         verbose_name='Subscriber',
