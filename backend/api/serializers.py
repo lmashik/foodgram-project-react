@@ -61,8 +61,8 @@ class CustomPrimaryKeyField(serializers.RelatedField):
         model = self.Meta.model
         try:
             return model.objects.get(pk=data)
-        except (TypeError, ValueError):
-            raise Exception('incorrect_type')
+        except Exception as error:
+            raise TypeError(f'Incorrect_type: {error}.')
 
 
 class TagRelatedField(CustomPrimaryKeyField, TagSerializer):

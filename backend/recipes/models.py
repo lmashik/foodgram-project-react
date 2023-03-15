@@ -16,13 +16,23 @@ class Tag(models.Model):
         max_length=7,
         unique=True,
         default='#E26C2D',
-        validators=(RegexValidator(r'^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$'),),
+        validators=(
+            RegexValidator(
+                r'^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
+                'Colour must be in HEX-format.'
+            ),
+        ),
     )
     slug = models.SlugField(
         verbose_name='Identifier',
         max_length=200,
         unique=True,
-        validators=(RegexValidator(r'^[-a-zA-Z0-9_]+$'),),
+        validators=(
+            RegexValidator(
+                r'^[-a-zA-Z0-9_]+$',
+                'Slug must be in r"^[-a-zA-Z0-9_]+$" format'
+            ),
+        ),
         db_index=True,
     )
 
@@ -50,6 +60,12 @@ class Ingredient(models.Model):
     class Meta:
         verbose_name = 'Ingredient'
         verbose_name_plural = 'Ingredients'
+        constraints = (
+            models.UniqueConstraint(
+                fields=('name', 'measurement_unit'),
+                name='unique_measurement_unit_for_name',
+            ),
+        )
 
     def __str__(self):
         """Строковое представление объекта модели."""
@@ -76,7 +92,12 @@ class Recipe(models.Model):
     )
     cooking_time = models.IntegerField(
         verbose_name='Cooking time',
-        validators=(MinValueValidator(1),),
+        validators=(
+            MinValueValidator(
+                1,
+                'Cooking time must not be less than 1 minute'
+            ),
+        ),
     )
     ingredients = models.ManyToManyField(
         Ingredient,
@@ -157,7 +178,10 @@ class Favorites(models.Model):
 
     def __str__(self):
         """Строковое представление объекта модели."""
-        return f'{self.recipe} in {self.user}s favorites'
+        return (
+            f'{self.recipe.name} in {self.user.last_name} '
+            f'{self.user.first_name}s favorites'
+        )
 
 
 class ShoppingCart(models.Model):
