@@ -1,0 +1,9 @@
+# игнорировать каталоги
+.git
+.cache
+.idea
+.github
+venv
+
+# игнорировать все файлы markdown
+*.md

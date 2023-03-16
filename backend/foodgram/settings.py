@@ -32,7 +32,10 @@ SECRET_KEY = 'django-insecure-upi#girs_v8b@02-bza2+3jdiwobrba2*h()tvz&i300t_m&l6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [
+    '130.193.55.184',
+    'ml-foodgram.hopto.org',
+]
 
 
 # Application definition
