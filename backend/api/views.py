@@ -21,11 +21,8 @@ from recipes.models import Favorites, Ingredient, Recipe, ShoppingCart, Tag
 from users.models import Subscription, User
 
 
-
-
 class CustomUserViewSet(UserViewSet):
     """Представление для пользователей."""
-    pagination_class = LimitOffsetPagination
 
     @action(
         detail=True,
@@ -49,7 +46,11 @@ class CustomUserViewSet(UserViewSet):
             Subscription.objects.get(subscriber=user, author=author).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @action(detail=False, permission_classes=(permissions.IsAuthenticated,))
+    @action(
+        detail=False,
+        permission_classes=(permissions.IsAuthenticated,),
+        pagination_class=LimitOffsetPagination
+    )
     def subscriptions(self, request):
         user = request.user
         subscriptions_authors = User.objects.filter(
