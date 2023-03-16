@@ -9,13 +9,9 @@ from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 
 from api.permissions import IsAuthorOrReadOnly
-from api.serializers import (
-    IngredientSerializer,
-    RecipeSerializer,
-    ShortRecipeSerializer,
-    SubscriptionSerializer,
-    TagSerializer
-)
+from api.serializers import (IngredientSerializer, RecipeSerializer,
+                             ShortRecipeSerializer, SubscriptionSerializer,
+                             TagSerializer)
 from api.utils import create_pdf_shopping_cart
 from recipes.models import Favorites, Ingredient, Recipe, ShoppingCart, Tag
 from users.models import Subscription, User

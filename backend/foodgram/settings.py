@@ -36,6 +36,7 @@ ALLOWED_HOSTS = [
     '130.193.55.184',
     'ml-foodgram.hopto.org',
     'backend',
+    '127.0.0.1',
 ]
 
 
