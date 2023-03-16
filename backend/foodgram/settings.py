@@ -35,6 +35,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     '130.193.55.184',
     'ml-foodgram.hopto.org',
+    'backend',
 ]
 
 
