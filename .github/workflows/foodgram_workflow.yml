@@ -55,7 +55,8 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            cd /infra/
+            ls -la
+            pwd
             sudo docker-compose stop
             sudo docker-compose rm backend
             touch .env
