@@ -55,8 +55,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            ls -la
-            pwd
+            ls -la /app
             sudo docker-compose stop
             sudo docker-compose rm backend
             touch .env
