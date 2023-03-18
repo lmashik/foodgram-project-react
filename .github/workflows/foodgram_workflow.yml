@@ -5,7 +5,6 @@ on: push
 jobs:
   tests:
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v2
     - name: Set up Python
@@ -21,7 +20,8 @@ jobs:
     - name: Test with flake8
       run: |
         python -m flake8
-  build_and_push_to_docker_hub:
+
+  build_and_push_to_docker_hub_backend:
     name: Push Docker image to Docker Hub
     runs-on: ubuntu-latest
     needs: tests
@@ -43,6 +43,28 @@ jobs:
           file: backend/Dockerfile
           context: ./backend/
 
+  build_and_push_to_docker_hub_frontend:
+    name: Push Docker image to Docker Hub
+    runs-on: ubuntu-latest
+    needs: tests
+    steps:
+      - name: Check out the repo
+        uses: actions/checkout@v2
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      - name: Login to Docker
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Push to Docker Hub
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/foodgram_frontend:latest
+          file: frontend/Dockerfile
+          context: ./frontend/
+
   deploy:
     runs-on: ubuntu-latest
     needs: build_and_push_to_docker_hub
@@ -56,7 +78,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             sudo docker-compose stop
-            sudo docker-compose rm web
+            sudo docker-compose rm backend
             touch .env
             echo DB_ENGINE=${{ secrets.DB_ENGINE }} >> .env
             echo DB_NAME=${{ secrets.DB_NAME }} >> .env

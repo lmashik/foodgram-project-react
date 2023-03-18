@@ -8,7 +8,8 @@ services:
     env_file:
       - ../backend/foodgram/.env
   backend:
-    build: ../backend/
+#    build: ../backend/
+    image: marialapikova/foodgram_backend:latest
     restart: always
     volumes:
       - static_value:/app/static/
@@ -16,11 +17,12 @@ services:
     depends_on:
       - db
     env_file:
-      - ../backend/foodgram/.env
+      - ./.env
   frontend:
-    build:
-      context: ../frontend
-      dockerfile: Dockerfile
+#    build:
+#      context: ../frontend
+#      dockerfile: Dockerfile
+    image: marialapikova/foodgram_frontend:latest
     volumes:
       - ../frontend/:/app/result_build/
   nginx:
