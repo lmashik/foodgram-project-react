@@ -15,6 +15,7 @@ from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from users.models import Subscription, User
+from api.pagination import CustomPagination
 
 
 class CustomUserViewSet(UserViewSet):
@@ -51,13 +52,14 @@ class CustomUserViewSet(UserViewSet):
         subscriptions_authors = User.objects.filter(
             subscriptions__subscriber=user
         )
-        pages = self.paginate_queryset(subscriptions_authors)
+        # pages = self.paginate_queryset(subscriptions_authors)
         serializer = SubscriptionSerializer(
-            pages,
+            subscriptions_authors,
             many=True,
-            context={'request': request}
+            # context={'request': request}
         )
-        return self.get_paginated_response(serializer.data)
+        # return self.get_paginated_response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
@@ -75,7 +77,7 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 class RecipeViewSet(viewsets.ModelViewSet):
     """Представление для рецептов."""
     serializer_class = RecipeSerializer
-    pagination_class = LimitOffsetPagination
+    pagination_class = CustomPagination
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ('author',)
 
