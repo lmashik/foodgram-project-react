@@ -96,11 +96,8 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 'is_in_shopping_cart'
             )
         tags = self.request.query_params.getlist('tags')
-        if tags and len(tags) < Tag.objects.all().count():
+        if tags:
             queryset = queryset.filter(tags__slug__in=tags).distinct()
-        else:
-            queryset = []
-
         if is_favorite == 1:
             queryset = queryset.filter(favorites__user=self.request.user)
         if is_in_shopping_cart == 1:
@@ -132,12 +129,12 @@ class RecipeViewSet(viewsets.ModelViewSet):
             Favorites.objects.get(user=user, recipe=recipe).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
 
-    @action(detail=False, permission_classes=(permissions.IsAuthenticated,))
-    def favorites(self, request):
-        user = request.user
-        recipes = Recipe.objects.filter(favorites__user=user)
-        serializer = ShortRecipeSerializer(recipes, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)
+    # @action(detail=False, permission_classes=(permissions.IsAuthenticated,))
+    # def favorites(self, request):
+    #     user = request.user
+    #     recipes = Recipe.objects.filter(favorites__user=user)
+    #     serializer = ShortRecipeSerializer(recipes, many=True)
+    #     return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(
         detail=True,
