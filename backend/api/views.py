@@ -19,6 +19,7 @@ from users.models import Subscription, User
 
 class CustomUserViewSet(UserViewSet):
     """Представление для пользователей."""
+    pagination_class = CustomPagination
 
     @action(
         detail=True,
@@ -51,13 +52,10 @@ class CustomUserViewSet(UserViewSet):
         subscriptions_authors = User.objects.filter(
             subscriptions__subscriber=user
         )
-        # pages = self.paginate_queryset(subscriptions_authors)
         serializer = SubscriptionSerializer(
             subscriptions_authors,
             many=True,
-            # context={'request': request}
         )
-        # return self.get_paginated_response(serializer.data)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
@@ -129,13 +127,6 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             Favorites.objects.get(user=user, recipe=recipe).delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
-
-    # @action(detail=False, permission_classes=(permissions.IsAuthenticated,))
-    # def favorites(self, request):
-    #     user = request.user
-    #     recipes = Recipe.objects.filter(favorites__user=user)
-    #     serializer = ShortRecipeSerializer(recipes, many=True)
-    #     return Response(serializer.data, status=status.HTTP_200_OK)
 
     @action(
         detail=True,
