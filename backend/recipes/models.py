@@ -14,7 +14,6 @@ class Tag(models.Model):
         verbose_name='Colour',
         max_length=7,
         unique=True,
-        default='#E26C2D',
         validators=(
             RegexValidator(
                 r'^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
