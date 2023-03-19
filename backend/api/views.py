@@ -96,11 +96,14 @@ class RecipeViewSet(viewsets.ModelViewSet):
                 'is_in_shopping_cart'
             )
         tags = self.request.query_params.getlist('tags')
-        if tags:
+        if tags and len(tags) < Tag.objects.all().count():
             queryset = queryset.filter(tags__slug__in=tags).distinct()
-        if is_favorite:
+        else:
+            queryset = []
+
+        if is_favorite == 1:
             queryset = queryset.filter(favorites__user=self.request.user)
-        if is_in_shopping_cart:
+        if is_in_shopping_cart == 1:
             queryset = queryset.filter(
                 shopping_cart__user=self.request.user
             )
