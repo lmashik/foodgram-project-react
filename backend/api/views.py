@@ -1,4 +1,3 @@
-from api.pagination import CustomPagination
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (
     IngredientSerializer, RecipeSerializer, ShortRecipeSerializer,
@@ -13,13 +12,14 @@ from djoser.views import UserViewSet
 from recipes.models import Favorites, Ingredient, Recipe, ShoppingCart, Tag
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from users.models import Subscription, User
 
 
 class CustomUserViewSet(UserViewSet):
     """Представление для пользователей."""
-    pagination_class = CustomPagination
+    pagination_class = PageNumberPagination
 
     @action(
         detail=True,
@@ -74,7 +74,7 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 class RecipeViewSet(viewsets.ModelViewSet):
     """Представление для рецептов."""
     serializer_class = RecipeSerializer
-    pagination_class = CustomPagination
+    pagination_class = PageNumberPagination
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ('author',)
 
