@@ -1,4 +1,3 @@
-from api.pagination import CustomPagination
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (
     IngredientSerializer, RecipeSerializer, ShortRecipeSerializer,
