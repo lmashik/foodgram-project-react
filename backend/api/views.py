@@ -1,3 +1,4 @@
+from api.pagination import CustomPagination
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (
     IngredientSerializer, RecipeSerializer, ShortRecipeSerializer,
@@ -15,7 +16,6 @@ from rest_framework.decorators import action
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 from users.models import Subscription, User
-from api.pagination import CustomPagination
 
 
 class CustomUserViewSet(UserViewSet):
