@@ -6,9 +6,9 @@ from recipes.models import (
 
 class TagAdmin(admin.ModelAdmin):
     """Отображение параметров Tag в административной части сервиса."""
-    list_display = ('pk', 'name', 'colour', 'slug',)
-    search_fields = ('name', 'colour',)
-    list_filter = ('name', 'colour',)
+    list_display = ('pk', 'name', 'color', 'slug',)
+    search_fields = ('name', 'color',)
+    list_filter = ('name', 'color',)
 
 
 class IngredientAdmin(admin.ModelAdmin):

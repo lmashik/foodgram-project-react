@@ -10,11 +10,11 @@ class Tag(models.Model):
         max_length=200,
         unique=True,
     )
-    colour = models.CharField(
+    color = models.CharField(
         verbose_name='Colour',
         max_length=7,
         unique=True,
-        # default='#E26C2D',
+        default='#E26C2D',
         validators=(
             RegexValidator(
                 r'^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
