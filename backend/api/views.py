@@ -19,7 +19,6 @@ from users.models import Subscription, User
 
 class CustomUserViewSet(UserViewSet):
     """Представление для пользователей."""
-    pagination_class = CustomPagination
 
     @action(
         detail=True,
@@ -63,18 +62,19 @@ class TagViewSet(viewsets.ReadOnlyModelViewSet):
     """Представление для тегов."""
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
+    pagination_class = None
 
 
 class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     """Представление для ингредиентов."""
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
+    pagination_class = None
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
     """Представление для рецептов."""
     serializer_class = RecipeSerializer
-    pagination_class = CustomPagination
     filter_backends = (DjangoFilterBackend,)
     filterset_fields = ('author',)
 
