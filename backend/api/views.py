@@ -52,11 +52,13 @@ class CustomUserViewSet(UserViewSet):
         subscriptions_authors = User.objects.filter(
             subscriptions__subscriber=user
         )
+        pages = self.paginate_queryset(subscriptions_authors)
         serializer = SubscriptionSerializer(
-            subscriptions_authors,
+            pages,
             many=True,
+            context={'request': request}
         )
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        return self.get_paginated_response(serializer.data)
 
 
 class TagViewSet(viewsets.ReadOnlyModelViewSet):
