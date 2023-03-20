@@ -5,6 +5,7 @@ from recipes.models import (
     Favorites, Ingredient, Recipe, RecipeIngredient, ShoppingCart, Tag,
 )
 from rest_framework import serializers
+from rest_framework.serializers import ValidationError
 from users.models import Subscription, User
 
 
@@ -192,7 +193,7 @@ class SubscriptionSerializer(CustomUserSerializer):
     """Сериализатор для подписок."""
     recipes = serializers.SerializerMethodField(read_only=True)
     recipes_count = serializers.SerializerMethodField(read_only=True)
-    is_subscribed = serializers.SerializerMethodField(read_only=True)
+    is_subscribed = serializers.BooleanField(default=True, read_only=True)
 
     class Meta:
         model = User
@@ -208,22 +209,8 @@ class SubscriptionSerializer(CustomUserSerializer):
         )
         read_only_fields = fields
 
-    def get_is_subscribed(self, obj):
-        request = self.context.get('request')
-        if request is None or request.user.is_anonymous:
-            return False
-        is_subscribed = Subscription.objects.filter(
-            author=obj,
-            subscriber=request.user
-        ).exists()
-        return is_subscribed
-
     def get_recipes(self, obj):
         recipes = Recipe.objects.filter(author=obj)
-        request = self.context.get('request')
-        recipes_limit = request.GET.get('recipes_limit')
-        if recipes_limit:
-            recipes = recipes[:int(recipes_limit)]
         return ShortRecipeSerializer(recipes, many=True).data
 
     def get_recipes_count(self, obj):

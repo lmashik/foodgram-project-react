@@ -36,7 +36,10 @@ class CustomUserViewSet(UserViewSet):
             if is_subscribed or user == author:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
             Subscription.objects.create(subscriber=user, author=author)
-            return Response(status=status.HTTP_200_OK)
+            return Response(
+                SubscriptionSerializer(author).data,
+                status=status.HTTP_201_CREATED
+            )
         if request.method == 'DELETE':
             if not is_subscribed:
                 return Response(status=status.HTTP_400_BAD_REQUEST)
