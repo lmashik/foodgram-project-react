@@ -209,10 +209,21 @@ class SubscriptionSerializer(CustomUserSerializer):
         read_only_fields = fields
 
     def get_is_subscribed(self, obj):
-        return CustomUserSerializer(obj).data['is_subscribed']
+        request = self.context.get('request')
+        if request is None or request.user.is_anonymous:
+            return False
+        is_subscribed = Subscription.objects.filter(
+            author=obj,
+            subscriber=request.user
+        ).exists()
+        return is_subscribed
 
     def get_recipes(self, obj):
         recipes = Recipe.objects.filter(author=obj)
+        request = self.context.get('request')
+        recipes_limit = request.GET.get('recipes_limit')
+        if recipes_limit:
+            recipes = recipes[:int(recipes_limit)]
         return ShortRecipeSerializer(recipes, many=True).data
 
     def get_recipes_count(self, obj):
