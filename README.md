@@ -2,10 +2,10 @@
 
 Адрес сервиса: http://ml-foodgram.hopto.org/
 
-Параметры суперпользователя для административной части сервиса:
-E-mail: reviewer@test.test
-Username: reviewer
-Password: hfkHSi74gK
+Параметры суперпользователя для административной части сервиса:  
+E-mail: reviewer@test.test  
+Username: reviewer  
+Password: hfkHSi74gK  
 
 Foodgram - онлайн-сервис, позволяющий просматривать и создавать рецепты 
 блюд, подписываться на любимых авторов, добавлять рецепты в избранное и 
