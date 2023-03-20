@@ -209,7 +209,7 @@ class SubscriptionSerializer(CustomUserSerializer):
         read_only_fields = fields
 
     def get_is_subscribed(self, obj):
-        return CustomUserSerializer(obj).data.get('is_subscribed')
+        return CustomUserSerializer(obj).data['is_subscribed']
 
     def get_recipes(self, obj):
         recipes = Recipe.objects.filter(author=obj)
