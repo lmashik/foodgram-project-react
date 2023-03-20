@@ -190,8 +190,9 @@ class ShortRecipeSerializer(serializers.ModelSerializer):
 
 class SubscriptionSerializer(CustomUserSerializer):
     """Сериализатор для подписок."""
-    recipes = serializers.SerializerMethodField()
-    recipes_count = serializers.SerializerMethodField()
+    recipes = serializers.SerializerMethodField(read_only=True)
+    recipes_count = serializers.SerializerMethodField(read_only=True)
+    is_subscribed = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = User
@@ -205,6 +206,10 @@ class SubscriptionSerializer(CustomUserSerializer):
             'recipes',
             'recipes_count',
         )
+        read_only_fields = fields
+
+    def get_is_subscribed(self, obj):
+        return CustomUserSerializer(obj).data.get('is_subscribed')
 
     def get_recipes(self, obj):
         recipes = Recipe.objects.filter(author=obj)
