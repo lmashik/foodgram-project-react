@@ -5,7 +5,6 @@ from recipes.models import (
     Favorites, Ingredient, Recipe, RecipeIngredient, ShoppingCart, Tag,
 )
 from rest_framework import serializers
-from rest_framework.serializers import ValidationError
 from users.models import Subscription, User
 
 
