@@ -1,3 +1,4 @@
+from api.pagination import CustomPagination
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (
     IngredientSerializer, RecipeSerializer, ShortRecipeSerializer,
@@ -18,6 +19,7 @@ from users.models import Subscription, User
 
 class CustomUserViewSet(UserViewSet):
     """Представление для пользователей."""
+    pagination_class = CustomPagination
 
     @action(
         detail=True,
