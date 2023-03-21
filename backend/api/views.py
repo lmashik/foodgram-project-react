@@ -83,7 +83,7 @@ class RecipeViewSet(viewsets.ModelViewSet):
     serializer_class = RecipeSerializer
     filter_backends = (DjangoFilterBackend, filters.SearchFilter)
     filterset_fields = ('author',)
-    search_fields = ('name__istartswith',)
+    search_fields = ('ingredients__name__istartswith',)
 
     def get_permissions(self):
         if self.action in ('partial_update', 'destroy',):
