@@ -1,4 +1,5 @@
 from django.core.validators import MinValueValidator
+from django.db import transaction
 from djoser.serializers import UserSerializer
 from drf_extra_fields.fields import Base64ImageField
 from recipes.models import (
@@ -175,6 +176,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         ).exists()
         return is_in_shopping_cart
 
+    @transaction.atomic
     def create(self, validated_data):
         tags = validated_data.pop('tags')
         ingredients = validated_data.pop('recipeingredient')
@@ -183,6 +185,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         self.write_to_intermediate_model(recipe, tags, ingredients)
         return recipe
 
+    @transaction.atomic
     def update(self, instance, validated_data):
         tags = validated_data.pop('tags')
         ingredients = validated_data.pop('recipeingredient')
@@ -245,4 +248,4 @@ class SubscriptionSerializer(CustomUserSerializer):
         return ShortRecipeSerializer(recipes, many=True).data
 
     def get_recipes_count(self, obj):
-        return Recipe.objects.filter(author=obj).count()
+        return obj.recipes.count()
