@@ -76,14 +76,15 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Ingredient.objects.all()
     serializer_class = IngredientSerializer
     pagination_class = None
+    filter_backends = (filters.SearchFilter,)
+    search_fields = ('^name', '@name')
 
 
 class RecipeViewSet(viewsets.ModelViewSet):
     """Представление для рецептов."""
     serializer_class = RecipeSerializer
-    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
+    filter_backends = (DjangoFilterBackend,)
     filterset_fields = ('author',)
-    search_fields = ('^ingredients__name',)
 
     def get_permissions(self):
         if self.action in ('partial_update', 'destroy',):
