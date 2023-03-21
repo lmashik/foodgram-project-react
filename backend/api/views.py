@@ -11,7 +11,7 @@ from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.views import UserViewSet
 from recipes.models import Favorites, Ingredient, Recipe, ShoppingCart, Tag
-from rest_framework import permissions, status, viewsets
+from rest_framework import filters, permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from users.models import Subscription, User
@@ -81,8 +81,9 @@ class IngredientViewSet(viewsets.ReadOnlyModelViewSet):
 class RecipeViewSet(viewsets.ModelViewSet):
     """Представление для рецептов."""
     serializer_class = RecipeSerializer
-    filter_backends = (DjangoFilterBackend,)
+    filter_backends = (DjangoFilterBackend, filters.SearchFilter)
     filterset_fields = ('author',)
+    search_fields = ('name__istartswith',)
 
     def get_permissions(self):
         if self.action in ('partial_update', 'destroy',):
