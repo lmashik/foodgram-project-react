@@ -129,6 +129,34 @@ class RecipeSerializer(serializers.ModelSerializer):
             'cooking_time',
         )
 
+    def validate_cooking_time(self, value):
+        if value < 1:
+            raise serializers.ValidationError(
+                'Cooking time must be a positive integer.'
+            )
+        return value
+
+    def validate_ingredients(self, ingredients):
+        print(ingredients)
+        if len(ingredients) == 0:
+            raise serializers.ValidationError(
+                'A recipe cannot be created without ingredients.'
+            )
+        for ingredient in ingredients:
+            print(ingredient['ingredient']['id'])
+            if ingredient['amount'] < 1:
+                raise serializers.ValidationError(
+                    'Ingredient quantity must be a positive integer.'
+                )
+        id_list = [
+            ingredient['ingredient']['id'].id for ingredient in ingredients
+        ]
+        if len(id_list) > len(set(id_list)):
+            raise serializers.ValidationError(
+                'Ingredients cannot be repeated.'
+            )
+        return ingredients
+
     def get_is_favorited(self, obj):
         request = self.context.get('request')
         if request is None or request.user.is_anonymous:

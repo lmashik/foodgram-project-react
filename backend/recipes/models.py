@@ -138,7 +138,15 @@ class RecipeIngredient(models.Model):
         related_name='recipeingredient',
         on_delete=models.CASCADE,
     )
-    amount = models.IntegerField(verbose_name='Recipe ingredient amount')
+    amount = models.IntegerField(
+        verbose_name='Recipe ingredient amount',
+        validators=(
+            MinValueValidator(
+                1,
+                'Amount must not be less than 1 unit'
+            ),
+        ),
+    )
 
     class Meta:
         verbose_name = 'Ingredient amount'
