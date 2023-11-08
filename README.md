@@ -297,6 +297,5 @@ python3 manage.py loadingredients_csv
 ## Автор
 
 Мария Лапикова  
-mashik.mikhaylova@yandex.ru
-
+mashik_p@mail.ru
 
